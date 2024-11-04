@@ -1,4 +1,8 @@
-# React + Vite
+# Proyecto de aplicación web del clima actual para el módulo de React
+
+El presente repositorio se puede ver desplegado en el siguiente enlace https://fastidious-conkies-79520e.netlify.app/
+
+Desarrollado usando React en javascript + jws 
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
