@@ -37,7 +37,7 @@ function App() {
 	const [weather, setWeather] = useState({});
 	const [toggle, setToggle] = useState(true);
 	const [errorAPI, setErrorAPI] = useState(null);
-	const [isLoaded, setIsLoaded] = useState(false);
+	const [isLoaded, setIsLoaded] = useState(true);
 
 	useEffect(() => {
 		navigator.geolocation.getCurrentPosition(
@@ -54,6 +54,7 @@ function App() {
 	console.log(coords.latitude, coords.longitude);
 
 	useEffect(() => {
+		setIsLoaded(false);
 		if (coords) {
 			axios
 				.get(
@@ -85,18 +86,30 @@ function App() {
 						setErrorAPI(null);
 					}, 3000);
 				})
-				.finally();
+				.finally(() => {
+					setIsLoaded(true);
+				});
 		}
 	}, [coords]); //cuanto el segundo parámetro se ejecute(dependencia), va a hacer lo del primero
 
 	return (
-		<Card
-			errorL={errorL}
-			errorAPI={errorAPI}
-			weather={weather}
-			toggle={toggle}
-			setToggle={setToggle}
-		/>
+		<div>
+			{isLoaded ? (
+				<Card
+					errorL={errorL}
+					errorAPI={errorAPI}
+					weather={weather}
+					toggle={toggle}
+					setToggle={setToggle}
+				/>
+			) : (
+				<h2>
+					<img src="/loading.gif" alt="loading" />
+					<br />
+					Loading...
+				</h2>
+			)}
+		</div>
 	);
 }
 
