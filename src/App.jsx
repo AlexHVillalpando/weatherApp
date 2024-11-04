@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import conditionCodes from './utils/conditionCodes.js';
-import url from './utils/URL.js';
+import url from './utils/url.js';
 import key from './key.js';
 import {
 	thunderstormSvg,
