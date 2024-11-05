@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+
 import conditionCodes from './utils/conditionCodes.js';
 import url from './utils/url.js';
-import key from './key.js';
+import key from './utils/key.js';
+
 import {
 	thunderstormSvg,
 	drizzleSvg,
@@ -12,6 +14,15 @@ import {
 	clearSvg,
 	cloudSvg,
 } from './assets/images/index.js';
+import {
+	thunderstormNightSvg,
+	drizzleNightSvg,
+	rainNightSvg,
+	snowNightSvg,
+	atmosphereNightSvg,
+	clearNightSvg,
+	cloudNightSvg,
+} from './assets/images/indexNight.js';
 
 import Card from './components/Card.jsx';
 
@@ -20,7 +31,7 @@ const initialState = {
 	longitude: 0,
 };
 
-const icons = {
+const iconsDaytime = {
 	thunderstorm: thunderstormSvg,
 	drizzle: drizzleSvg,
 	rain: rainSvg,
@@ -30,7 +41,21 @@ const icons = {
 	clouds: cloudSvg,
 };
 
+const iconsNighttime = {
+	thunderstorm: thunderstormNightSvg,
+	drizzle: drizzleNightSvg,
+	rain: rainNightSvg,
+	snow: snowNightSvg,
+	atmosphere: atmosphereNightSvg,
+	clear: clearNightSvg,
+	clouds: cloudNightSvg,
+};
+
 let errorL = '';
+
+const d = new Date();
+let time = d.getHours();
+console.log(time);
 
 function App() {
 	const [coords, setCoords] = useState(initialState);
@@ -38,6 +63,7 @@ function App() {
 	const [toggle, setToggle] = useState(true);
 	const [errorAPI, setErrorAPI] = useState(null);
 	const [isLoaded, setIsLoaded] = useState(true);
+	const [icons, setIcons] = useState(iconsDaytime);
 
 	useEffect(() => {
 		navigator.geolocation.getCurrentPosition(
@@ -51,10 +77,13 @@ function App() {
 			},
 		);
 	}, []);
-	console.log(coords.latitude, coords.longitude);
 
 	useEffect(() => {
 		setIsLoaded(false);
+
+		if (18 < time || time < 6) {
+			setIcons(iconsNighttime);
+		}
 		if (coords) {
 			axios
 				.get(
@@ -63,7 +92,6 @@ function App() {
 				.then((res) => {
 					console.log(res); //imprimimos en consola para ver la estructura de la respuesta res
 					const keys = Object.keys(conditionCodes);
-
 					const iconName = keys.find((key) =>
 						conditionCodes[key].includes(res.data?.weather[0]?.id),
 					);
@@ -80,11 +108,8 @@ function App() {
 				})
 				.catch((err) => {
 					setErrorAPI(
-						'Error al comunicarse con la API, inténtelo de nuevo más tarde.',
+						'Error al comunicarse con la API, inténtelo de nuevo más tarde refrescando la página.',
 					);
-					setInterval(() => {
-						setErrorAPI(null);
-					}, 3000);
 				})
 				.finally(() => {
 					setIsLoaded(true);
@@ -94,21 +119,14 @@ function App() {
 
 	return (
 		<div>
-			{isLoaded ? (
-				<Card
-					errorL={errorL}
-					errorAPI={errorAPI}
-					weather={weather}
-					toggle={toggle}
-					setToggle={setToggle}
-				/>
-			) : (
-				<h2>
-					<img src="/loading.gif" alt="loading" />
-					<br />
-					Loading...
-				</h2>
-			)}
+			<Card
+				errorL={errorL}
+				errorAPI={errorAPI}
+				isLoaded={isLoaded}
+				weather={weather}
+				toggle={toggle}
+				setToggle={setToggle}
+			/>
 		</div>
 	);
 }

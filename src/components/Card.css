@@ -26,12 +26,12 @@
 	backdrop-filter: brightness(1) blur(1px);
 	box-shadow: 0 0 25px 10px #2c363b75;
 }
-
+/* ----------------- */
 .card__title,
 .card__subtitle {
 	text-align: center;
 }
-
+/* ----------------- */
 .card__body {
 	display: flex;
 	align-items: center;
