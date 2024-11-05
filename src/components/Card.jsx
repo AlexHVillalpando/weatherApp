@@ -6,6 +6,8 @@ import CardTitle from './CardTitle.jsx';
 import CardBody from './CardBody.jsx';
 import CardTemperature from './CardTemperature.jsx';
 import CardButton from './CardButton.jsx';
+import CardAbout from './CardAbout.jsx';
+import CardLoader from './CardLoader.jsx';
 
 function Card({ errorAPI, errorL, isLoaded, weather, toggle, setToggle }) {
 	const temp = toggle
@@ -20,13 +22,10 @@ function Card({ errorAPI, errorL, isLoaded, weather, toggle, setToggle }) {
 					<CardBody weather={weather} />
 					<CardTemperature temp={temp} toggle={toggle} />
 					<CardButton toggle={toggle} setToggle={setToggle} />
+					<CardAbout />
 				</>
 			) : (
-				<>
-					<img src="/loading.gif" alt="loading" />
-					<br />
-					Loading...
-				</>
+				<CardLoader />
 			)}
 		</div>
 	);

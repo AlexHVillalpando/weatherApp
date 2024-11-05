@@ -1,28 +1,36 @@
 #root {
 	min-height: 100vh;
 	height: 100%;
-	background-image: url('/bg.jpg');
-	background-repeat: no-repeat;
-	background-size: cover;
+	width: 100vw;
 	display: grid;
 	justify-content: center;
 	align-items: center;
 }
 
+.container {
+	width: inherit;
+	height: inherit;
+	background-repeat: no-repeat;
+	background-size: cover;
+	justify-content: center;
+	align-items: center;
+	display: grid;
+}
+
 .card {
-	max-width: 350px;
-	width: 100%;
+	width: 350px;
+	height: 400px;
 	padding: 2em 1.5em;
 	background-color: #ffffff00;
 	-webkit-backdrop-filter: brightness(1) blur(0);
-	backdrop-filter: brightness(1) blur(0);
+	backdrop-filter: brightness(1) blur(1px);
 	border-radius: 1.5em;
 	box-shadow: 0 0 1px 0px #2c363b75;
 	transition: box-shadow 0.2s;
 }
 
 .card:hover {
-	-webkit-backdrop-filter: brightness(1) blur(1px);
+	-webkit-backdrop-filter: brightness(1) blur(2px);
 	backdrop-filter: brightness(1) blur(1px);
 	box-shadow: 0 0 25px 10px #2c363b75;
 }
@@ -46,7 +54,7 @@
 .card__button {
 	display: block;
 	margin: 0 auto;
-	background-color: #00000033;
+	background-color: #0000007b;
 	-webkit-backdrop-filter: brightness(1) blur(1px);
 	backdrop-filter: brightness(1) blur(1px);
 }
@@ -54,4 +62,11 @@
 .card__button:hover {
 	-webkit-backdrop-filter: brightness(1) blur(5px);
 	backdrop-filter: brightness(1) blur(5px);
+}
+
+.card__about {
+	display: flex;
+	flex-direction: row-reverse;
+	font-size: 2em;
+	color: black;
 }

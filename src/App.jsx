@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, backgroundImage } from 'react';
 import axios from 'axios';
 
 import conditionCodes from './utils/conditionCodes.js';
@@ -14,6 +14,7 @@ import {
 	clearSvg,
 	cloudSvg,
 } from './assets/images/index.js';
+
 import {
 	thunderstormNightSvg,
 	drizzleNightSvg,
@@ -23,6 +24,26 @@ import {
 	clearNightSvg,
 	cloudNightSvg,
 } from './assets/images/indexNight.js';
+
+import {
+	thunderstormDay,
+	drizzleDay,
+	rainDay,
+	snowDay,
+	atmosphereDay,
+	clearDay,
+	cloudDay,
+} from './assets/images/backgrounds/day/index.js';
+
+import {
+	thunderstormNight,
+	drizzleNight,
+	rainNight,
+	snowNight,
+	atmosphereNight,
+	clearNight,
+	cloudNight,
+} from './assets/images/backgrounds/night/index.js';
 
 import Card from './components/Card.jsx';
 
@@ -51,6 +72,26 @@ const iconsNighttime = {
 	clouds: cloudNightSvg,
 };
 
+const backgroundsDaytime = {
+	thunderstorm: thunderstormDay,
+	drizzle: drizzleDay,
+	rain: rainDay,
+	snow: snowDay,
+	atmosphere: atmosphereDay,
+	clear: clearDay,
+	clouds: cloudDay,
+};
+
+const backgroundsNighttime = {
+	thunderstorm: thunderstormNight,
+	drizzle: drizzleNight,
+	rain: rainNight,
+	snow: snowNight,
+	atmosphere: atmosphereNight,
+	clear: clearNight,
+	clouds: cloudNight,
+};
+
 let errorL = '';
 
 const d = new Date();
@@ -64,6 +105,8 @@ function App() {
 	const [errorAPI, setErrorAPI] = useState(null);
 	const [isLoaded, setIsLoaded] = useState(true);
 	const [icons, setIcons] = useState(iconsDaytime);
+	const [bgs, setBgs] = useState(backgroundsDaytime);
+	const [currentBg, setCurrentBg] = useState('');
 
 	useEffect(() => {
 		navigator.geolocation.getCurrentPosition(
@@ -83,6 +126,7 @@ function App() {
 
 		if (18 < time || time < 6) {
 			setIcons(iconsNighttime);
+			setBgs(backgroundsNighttime);
 		}
 		if (coords) {
 			axios
@@ -92,9 +136,11 @@ function App() {
 				.then((res) => {
 					console.log(res); //imprimimos en consola para ver la estructura de la respuesta res
 					const keys = Object.keys(conditionCodes);
+
 					const iconName = keys.find((key) =>
 						conditionCodes[key].includes(res.data?.weather[0]?.id),
 					);
+					setCurrentBg(iconName);
 					setWeather({
 						city: res.data?.name,
 						country: res.data?.sys?.country,
@@ -118,7 +164,10 @@ function App() {
 	}, [coords]); //cuanto el segundo parámetro se ejecute(dependencia), va a hacer lo del primero
 
 	return (
-		<div>
+		<div
+			className="container"
+			style={{ backgroundImage: `url(${bgs[currentBg]})` }}
+		>
 			<Card
 				errorL={errorL}
 				errorAPI={errorAPI}
