@@ -67,6 +67,8 @@
 .card__about {
 	display: flex;
 	flex-direction: row-reverse;
-	font-size: 2em;
-	color: black;
+}
+
+.bx {
+	color: #fff;
 }
