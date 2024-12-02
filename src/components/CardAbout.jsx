@@ -9,7 +9,7 @@ function CardAbout() {
 				rel="stylesheet"
 			/>{' '}
 			<a href="https://github.com/AlexHVillalpando/weatherApp" target="_blank">
-				<i className="bx bxl-github bx-tada"></i>
+				<i className="bx bxl-github bx-tada-hover bx-md"></i>
 			</a>
 		</div>
 	);

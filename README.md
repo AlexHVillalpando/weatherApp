@@ -4,7 +4,7 @@ El presente repositorio se puede ver desplegado en el siguiente enlace https://f
 
 Documentación de la API consumida: https://openweathermap.org/current
 
-Desarrollado usando React en javascript + JWS 
+Desarrollado usando React en javascript + SWC 
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
