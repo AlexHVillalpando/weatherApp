@@ -116,7 +116,6 @@ function App() {
 			},
 			(error) => {
 				errorL = `${error.message}. Showing weather at 0°00'00"N 0°00'00"E.`;
-				console.log(error.message);
 			},
 		);
 	}, []);
