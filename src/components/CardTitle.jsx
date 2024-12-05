@@ -7,7 +7,6 @@ function CardTitle({ errorAPI, errorL, weather }) {
 			<h2 className="card__subtitle">
 				{errorAPI && <p>❌ {errorAPI}</p>}
 				{errorL ? `❌ ${errorL}` : `${weather.city},${weather.country}`}
-				{console.log(errorL)}
 			</h2>
 		</div>
 	);

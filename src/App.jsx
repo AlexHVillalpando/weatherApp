@@ -95,8 +95,7 @@ const backgroundsNighttime = {
 let errorL = '';
 
 const d = new Date();
-let time = d.getHours();
-console.log(time);
+let localTime = d.getHours();
 
 function App() {
 	const [coords, setCoords] = useState(initialState);
@@ -122,45 +121,96 @@ function App() {
 
 	useEffect(() => {
 		setIsLoaded(false);
+		axios
+			.get(`${url}lat=${coords.latitude}&lon=${coords.longitude}&appid=${key}`)
+			.then((res) => {
+				//imprimimos en consola para ver la estructura de la respuesta res
+				const keys = Object.keys(conditionCodes);
 
-		if (18 < time || time < 6) {
+				const iconName = keys.find((key) =>
+					conditionCodes[key].includes(res.data?.weather[0]?.id),
+				);
+				setCurrentBg(iconName);
+				setWeather({
+					city: res.data?.name,
+					country: res.data?.sys?.country,
+					icon: icons[iconName],
+					main: res.data?.weather[0]?.main,
+					wind: res.data?.wind?.speed,
+					clouds: res.data?.clouds?.all,
+					pressure: res.data?.main?.pressure,
+					temperature: Math.floor(res.data?.main?.temp - 273.15),
+					localTimeSec: res.data?.dt + 21600 + res.data?.timezone,
+					localTime: new Date(
+						(res.data?.dt + 21600 + res.data?.timezone) * 1000,
+					)
+						.toString()
+						.slice(16, 24),
+					sunrise: new Date(
+						(res.data?.sys?.sunrise + 21600 + res.data?.timezone) * 1000,
+					)
+						.toString()
+						.slice(16, 24),
+					sunset: new Date(
+						(res.data?.sys?.sunset + 21600 + res.data?.timezone) * 1000,
+					)
+						.toString()
+						.slice(16, 24),
+					timezone: res.data?.timezone / 3600,
+				});
+			})
+			.catch((err) => {
+				setErrorAPI(
+					'Error al comunicarse con la API, inténtelo de nuevo más tarde refrescando la página.',
+				);
+			})
+			.finally(() => {
+				setIsLoaded(true);
+			});
+	}, [coords]); //cuanto el segundo parámetro se ejecute(dependencia), va a hacer lo del primero
+
+	useEffect(() => {
+		const isBeforeSunrise =
+			parseInt(weather.localTime?.toString().split(':').join(''), 10) <
+			parseInt(weather.sunrise?.toString().split(':').join(''), 10);
+		const isAfterSunset =
+			parseInt(weather.sunset?.toString().split(':').join(''), 10) <
+			parseInt(weather.localTime?.toString().split(':').join(''), 10);
+
+		if (weather.localTime && (isBeforeSunrise || isAfterSunset)) {
 			setIcons(iconsNighttime);
 			setBgs(backgroundsNighttime);
+			//console.log(`hora local: ${weather.localTime}`);
+			//console.log('es de noche');
+		} else {
+			setIcons(iconsDaytime);
+			setBgs(backgroundsDaytime);
+			//console.log(`hora local: ${weather.localTime}`);
+			//console.log('es de día');
 		}
-		if (coords) {
-			axios
-				.get(
-					`${url}lat=${coords.latitude}&lon=${coords.longitude}&appid=${key}`,
-				)
-				.then((res) => {
-					console.log(res); //imprimimos en consola para ver la estructura de la respuesta res
-					const keys = Object.keys(conditionCodes);
+	}, [weather]);
 
-					const iconName = keys.find((key) =>
-						conditionCodes[key].includes(res.data?.weather[0]?.id),
-					);
-					setCurrentBg(iconName);
-					setWeather({
-						city: res.data?.name,
-						country: res.data?.sys?.country,
-						icon: icons[iconName],
-						main: res.data?.weather[0]?.main,
-						wind: res.data?.wind?.speed,
-						clouds: res.data?.clouds?.all,
-						pressure: res.data?.main?.pressure,
-						temperature: Math.floor(res.data?.main?.temp - 273.15),
-					});
-				})
-				.catch((err) => {
-					setErrorAPI(
-						'Error al comunicarse con la API, inténtelo de nuevo más tarde refrescando la página.',
-					);
-				})
-				.finally(() => {
-					setIsLoaded(true);
+	const handleSearch = (input) => {
+		setIsLoaded(false);
+		axios
+			.get(
+				`http://api.openweathermap.org/geo/1.0/direct?q=${input}&limit=3&appid=${key}`,
+			)
+			.then((res) => {
+				setCoords({
+					latitude: res.data[0]?.lat,
+					longitude: res.data[0].lon,
 				});
-		}
-	}, [coords]); //cuanto el segundo parámetro se ejecute(dependencia), va a hacer lo del primero
+			})
+			.catch(() => {
+				setErrorAPI(
+					'Error al comunicarse con la API, inténtelo de nuevo más tarde refrescando la página.',
+				);
+			})
+			.finally(() => {
+				setIsLoaded(true);
+			});
+	};
 
 	return (
 		<div
@@ -174,6 +224,7 @@ function App() {
 				weather={weather}
 				toggle={toggle}
 				setToggle={setToggle}
+				handleSearch={handleSearch}
 			/>
 		</div>
 	);
