@@ -43,8 +43,13 @@
 /* ----------------- */
 .card__body {
 	display: flex;
+	flex-direction: column;
 	align-items: center;
 	height: auto;
+}
+
+.bars{
+	display: flex;
 }
 
 .card__body--leftbar {
@@ -71,6 +76,7 @@
 
 .card__form {
 	display: flex;
+	width: 100%;
 }
 
 .card__form--btn {
@@ -81,14 +87,14 @@
 }
 
 .card__form--box-container {
-	background-color: #fff;
+	background-color: #ffffff7e;
 	border: 1px solid #ccc;
 	border-radius: 0 0.5em 0.5em 0;
 	padding: 0 1em 0 0.2em;
 	display: flex;
 	align-items: center;
 	gap: 0.25em;
-	max-width: 100%;
+	width: 100%;
 }
 
 .card__form--box-container input {
@@ -128,8 +134,7 @@
 
 .bx {
 	color: #fff;
+	margin-bottom: .3em;
 }
 
-.bx {
-	color: black;
-}
+

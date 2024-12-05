@@ -1,4 +1,4 @@
-import { useState, useEffect, backgroundImage } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 import conditionCodes from './utils/conditionCodes.js';
@@ -93,9 +93,6 @@ const backgroundsNighttime = {
 };
 
 let errorL = '';
-
-const d = new Date();
-let localTime = d.getHours();
 
 function App() {
 	const [coords, setCoords] = useState(initialState);
