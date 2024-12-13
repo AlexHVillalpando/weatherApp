@@ -1,6 +1,6 @@
 # Proyecto de aplicación web del clima actual para el módulo de React
 
-El presente repositorio se puede ver desplegado en el siguiente enlace https://fastidious-conkies-79520e.netlify.app/
+El presente repositorio se puede ver desplegado en el siguiente enlace https://oscar-weatherapp.netlify.app/
 
 Documentación de la API consumida: https://openweathermap.org/current
 
