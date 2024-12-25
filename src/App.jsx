@@ -191,7 +191,7 @@ function App() {
 		setIsLoaded(false);
 		axios
 			.get(
-				`http://api.openweathermap.org/geo/1.0/direct?q=${input}&limit=3&appid=${key}`,
+				`https://cors-anywhere.herokuapp.com/http://api.openweathermap.org/geo/1.0/direct?q=${input}&limit=3&appid=${key}`,
 			)
 			.then((res) => {
 				setCoords({
@@ -201,7 +201,7 @@ function App() {
 			})
 			.catch(() => {
 				setErrorAPI(
-					'Error al comunicarse con la API, inténtelo de nuevo más tarde refrescando la página.',
+					'Ciudad no encontrada, inténtelo de nuevo más tarde refrescando la página.',
 				);
 			})
 			.finally(() => {
