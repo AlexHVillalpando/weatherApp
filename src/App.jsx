@@ -158,7 +158,7 @@ function App() {
 			})
 			.catch((err) => {
 				setErrorAPI(
-					'Error al comunicarse con la API, inténtelo de nuevo más tarde refrescando la página.',
+					'Error al intentar comunicarse con la API, inténtelo de nuevo más tarde refrescando la página.',
 				);
 			})
 			.finally(() => {
